@@ -1,23 +1,32 @@
-int nthUglyNumber(int n) {
-    if (n==1) return 1;
-    
-    vector<int> a(n);
-    int p2=0,p3=0,p5=0;
-    a[0]=1;
-    
-    for(int i=1;i<n;i++){
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        // Since this is a dp problem start creating an array:
+        int arr[n+1];
+        arr[1] = 1;
+        // Initialize with 1 <--> arr[1]
         
-        a[i]=min({a[p2]*2,a[p3]*3,a[p5]*5});
-        //jo minimum hai usko le rahe hai
+        int ptr2 = 1, ptr3 = 1, ptr5 = 1;
+        // Three Pointer's (prime factors 2, 3, 5)
+        //  Temp variable
+        int t;
         
-        // and jis number ka multply ka result liye hai
-        // us number ka position increase kr rahe 
-        //so that , us number ke liye uske position ke aage ka number se multply kare
-        //and jo baki number hai wo apne postions ke aage ke number se multiply kare
-        if(a[i]==a[p2]*2) p2++;
-        if(a[i]==a[p3]*3) p3++;
-        if(a[i]==a[p5]*5) p5++;
-        
+        for(int i = 2; i < n+1; i++){
+            // Each time we multiply the ptrs and find the minimum value 
+            t = min(arr[ptr2]*2, min(arr[ptr3]*3, arr[ptr5]*5));
+            arr[i] = t;
+            
+            // Accordingly we increase the ptr
+            if(arr[i] == arr[ptr2]*2){
+                ptr2++;
+            }
+            if(arr[i] == arr[ptr3]*3){
+                ptr3++;
+            }
+            if(arr[i] == arr[ptr5]*5){
+                ptr5++;
+            }
+        }
+        return arr[n];
     }
-    return a[n-1];
-}
+};
